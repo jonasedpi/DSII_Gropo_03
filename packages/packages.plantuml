@@ -1,0 +1,27 @@
+@startuml
+
+br.com.unisinos.univacinas.user.User -- br.com.unisinos.univacinas.tax_invoice.TaxInvoiceController
+br.com.unisinos.univacinas.user.User -- br.com.unisinos.univacinas.insurance.InsuranceController
+br.com.unisinos.univacinas.user.User -- br.com.unisinos.univacinas.prescription.PrescriptionController
+br.com.unisinos.univacinas.user.User -- br.com.unisinos.univacinas.transactions.TransactionsController
+br.com.unisinos.univacinas.user.User -- br.com.unisinos.univacinas.purchase_order.PurchaseOrderController
+
+br.com.unisinos.univacinas.tax_invoice.TaxInvoiceController -- br.com.unisinos.univacinas.tax_invoice.TaxInvoiceDocument
+br.com.unisinos.univacinas.tax_invoice.TaxInvoiceController -- br.com.unisinos.univacinas.tax_invoice.InternalRevenueServiceAdapter
+br.com.unisinos.univacinas.tax_invoice.InternalRevenueServiceAdapter -- br.com.unisinos.univacinas.third_party.InternalRevenueServiceApi
+
+br.com.unisinos.univacinas.insurance.InsuranceController -- br.com.unisinos.univacinas.insurance.Procedure
+br.com.unisinos.univacinas.insurance.Procedure -- br.com.unisinos.univacinas.insurance.Batch
+br.com.unisinos.univacinas.insurance.Batch -- br.com.unisinos.univacinas.insurance.Invoicing
+
+br.com.unisinos.univacinas.prescription.PrescriptionController -- br.com.unisinos.univacinas.prescription.PrescriptionDocument
+
+br.com.unisinos.univacinas.transactions.TransactionsController -- br.com.unisinos.univacinas.transactions.Transaction
+
+br.com.unisinos.univacinas.purchase_order.PurchaseOrderController -- br.com.unisinos.univacinas.purchase_order.PurchaseOrder
+br.com.unisinos.univacinas.purchase_order.PurchaseOrder -- br.com.unisinos.univacinas.purchase_order.OrderItem
+br.com.unisinos.univacinas.purchase_order.OrderItem -- br.com.unisinos.univacinas.purchase_order.Product
+br.com.unisinos.univacinas.purchase_order.PurchaseOrderController -- br.com.unisinos.univacinas.purchase_order.SupplierAdapter
+br.com.unisinos.univacinas.purchase_order.SupplierAdapter -- br.com.unisinos.univacinas.third_party.SupplierApi
+
+@enduml
