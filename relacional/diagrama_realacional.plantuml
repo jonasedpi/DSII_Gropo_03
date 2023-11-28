@@ -1,0 +1,312 @@
+@startuml diagrama_relacional
+    
+
+    entity User {
+        * idUser: long<<PK>>
+        --
+        * cpf: String
+        * birthDate : Date
+        * name: String
+        * password: String
+        * email: String
+        --
+        * idPrivilege: long<<FK>>      
+    }
+
+    entity Privilege{
+        *idPrivilege: Long<<PF>>
+        --
+        privilegeFlags: int
+    }
+
+    entity Financial{
+        *idFinancial: long<<PK>>
+        --
+        *idEmployee: long<<FK>>
+    }
+
+    entity Client{
+        *idClient: long<<PK>>
+        --
+        *plan_Date: String
+        marital_Status: String
+        number_dependents: int
+        *cellphone: String
+        controlled_medicine: String
+        allergy: String
+        chronic_disease: String
+        --
+        *idUser: long<<FK>>
+        *idAdress: long<FK>>
+        idClient
+    }
+
+    entity Adress{
+        *idAdress: long<PK>>
+        --
+        *public_place: String
+        number: int
+        *county: String
+        *UF: String
+        neighborhood: String
+        *country: String
+        complement: String 
+    }
+
+    entity ClientDiscount{
+        *idClientDiscount: long<<PK>>
+        --
+        *idClient: long<<FK>>
+        *idDiscount: long<<FK>>
+    }
+
+    entity Discount{
+        *idDiscount: long<<PK>>
+        --
+        dateDiscount: Date
+    }
+
+    entity ItemDiscount{
+        *idItemDiscount: Long<<PK>>
+        --
+        *percentageDiscount: int
+        *valid: boolean
+        --
+        *idDiscount: Long<<FK>>
+        *idProduct: long<<FK>>
+    }
+
+    entity PurchaseOrder{
+        *idPurchaseOrder:long<<PK>>
+        --
+        idUser: long<<FK>>
+    }
+
+    entity Prescription{
+        *idPrescription: long<<PK>>
+        --
+        dateValidade:Date: date
+        --
+        *idClient: long<<FK>>
+        *idMedic: long<<FK>>
+    }
+
+    entity Medic{
+        *idMedic: long<<PK>>
+        --
+        *specialty: String
+        --
+        *idEmployee: long<<FK>>
+    }
+
+    entity Query{
+        *idQuery: long<<PK>>
+        --
+        *dateQuery: Date
+        *hour: String
+        comment: String
+        --
+        *idMedic
+    }
+
+    entity ProductQuery{
+        *idProductQuery: long<<PK>>
+        --
+        *dose: int
+        *amount: int
+        --
+        *idQuery: long<<FK>>
+        *idProduct: long<<FK>>
+    }
+
+    entity Employee{
+        *idEmployee: long<<PK>
+        --
+        stateClinic: String
+        cityClinic: String
+        regionalCouncil: String
+        *cbo: String
+        --
+        *idUser: long<<FK>>
+    }
+
+    entity ItemProduct{
+        *idItemProduct:long<<PK>>
+        --
+        *amount: int
+        --
+        *idPurchaseOrder:long<<FK>>
+        idProduct: long<<FK>>
+    }
+
+    entity Product{
+        *idProduct: long<<PK>>
+        --
+        *name:String
+        *value: long
+        *type: String
+        --
+        *idStock: long<<FK>>
+    }
+
+    entity Vaccine{
+        *idVaccine: long<<PK>>
+        --
+        -dosesNecessary: int
+        --
+        *idProduct: long<<FK>>
+    }
+
+    entity Stock{
+        *idStock: long<<PK>>
+        --
+        *amount: int
+        --
+        *idProduct: long<<FK>>
+    }
+
+    entity ImportTaxInvoice{
+        *idImportInvoice: long<<PK>>
+        --
+        *dateImport: date
+        *noteOverwriting: boolean
+        --
+        *idFinancial: long<<FK>>
+    }
+
+    entity TaxInvoice{
+        *idInvoice
+        --
+        *amount: String
+        *numberInvoice: String
+        detailing: String
+        typeService: String
+        --
+        *idImportInvoice
+        *idSupplier
+    }
+
+    entity Supplier{
+        *idSupplier
+        --
+        *cnpj: String
+        *corporateName: String
+        *municipalRegistration: String
+        actingBranch: String
+    }
+
+    entity Procedure{
+        *idProcedure: long<<PK>>
+        --
+        *nameProcedure: String
+        *status: String
+    }
+
+    entity MedicProcedure{
+        *idMedicProcedure: long<<PK>>
+        --
+        *idMedic: long<<FK>>
+        *idProcedure: long<<FK>>
+    }
+
+    entity Invoicing{
+        *idInvoicing: long<<PK>>
+        --
+        value: int
+        --
+        idHealthInsurance: long<<PK>>
+        *idBatch: long<<PK>>
+    }
+
+    entity Batch{
+        *idBatch: long<<PK>>
+        --
+        *value: int
+    }
+
+    entity InvoicingProcedure{
+        *idInvoicingProcedure: long<<PK>>
+        --
+        *idProcedure: long<<FK>>
+        *idInvoicing: long<<FK>>
+        *idBatch: long<<PK>>
+    }
+
+    entity  HealthInsurance{
+        *idHealthInsurance: long<<PK>>
+        --
+        name: String
+        Level: String
+    }
+
+    entity Transactions {
+        idTransactions: long<<PK>>
+        --
+        *open: boolean
+        *type: int
+        *creation_Date: Date
+        estimated_date: Date
+        *closing_Date: Date
+        Transition_value: double
+        installment_Numbers: int
+        discretion: String
+        third: String
+
+    }
+
+    entity FinancialTransactions {
+        *idFinancialTransactions: long<<PK>>
+        --
+        *idFinancial: long<<FK>>
+        *idTransactions: long<<FK>>
+    }
+
+    Transactions }o-o{ Transactions  
+
+    Financial ||--o{ FinancialTransactions
+    FinancialTransactions ||--o{Transactions
+
+    HealthInsurance |o--o{ Client
+    HealthInsurance |o--O{ Invoicing
+    Batch ||--o{ Invoicing
+
+    Invoicing ||--o{InvoicingProcedure
+    InvoicingProcedure }o--|| Procedure
+
+    Employee }|--|| User
+    Employee ||--o{ Financial
+
+    ImportTaxInvoice }o--|| Financial
+    ImportTaxInvoice ||--|{ TaxInvoice
+    TaxInvoice }|--|| Supplier
+
+    ProductQuery }o-|| Product
+    ProductQuery }o-|| Query
+
+    Client ||--|| Prescription
+    Medic ||--o{ Prescription
+    Medic }|--o| Query
+
+    Medic }o--|| Employee
+    Medic ||--o| MedicProcedure
+    MedicProcedure }|--|| Procedure
+
+    Client }o--|| ClientDiscount
+    Discount }o--|| ClientDiscount
+    Discount ||--o{ ItemDiscount
+    ItemDiscount |o--o{ Product
+
+    User||--|| Privilege
+    Client ||--|| User
+    Client||--|| Adress
+
+    Client ||--o{ PurchaseOrder
+    PurchaseOrder ||--o{ ItemProduct
+    ItemProduct ||--|| Product
+
+    Product }o--|| Stock
+    Product ||--|| Vaccine
+
+
+
+@enduml
